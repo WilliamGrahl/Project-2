@@ -1,7 +1,6 @@
+import tkinter as tk
 import pickle
-from plots import open_tkinter_window_1
-from plots import open_tkinter_window_2
-from plots import open_tkinter_window_3
+from plots import *
 
 def save_data_with_pickle(data, filename):
     try:
@@ -44,7 +43,7 @@ def log_in():
         while True:
             print("\nIncorrect username or password.")
             print("Do you want to:")
-            print("1. Stay")
+            print("1. Try")
             print("2. Go to starting menu")
             print("3. Exit")
             try:
@@ -86,7 +85,7 @@ def sign_up():
 
         while True:
             print("Do you want to:")
-            print("1. Stay")
+            print("1. Try again")
             print("2. Go to starting menu")
             print("3. Exit")
             try:
@@ -119,24 +118,45 @@ def main():
             continue
 
     global logged_in
-    if logged_in == True:        
-        while True:
-            print("\n1. OMX30")
-            print("2. BITCOIN")
-            print("3. GOLD")
-            myAnswer = input("\nWhich one do you want to look at? Type in the number: ")
-            if myAnswer == "1":
-                open_tkinter_window_1()
-                break
-            elif myAnswer == "2":
-                open_tkinter_window_2()
-                break
-            elif myAnswer == "3":
-                open_tkinter_window_3()
-                break
-            else:
-                print("Wrong input, try again.")
-                continue
+    if logged_in == True: 
+
+        main_window = tk.Tk()
+        main_window.geometry("1200x600")
+        frame1 = create_omx_frame(main_window)
+        frame2 = create_bitcoin_frame(main_window)
+        frame3 = create_gold_frame(main_window)
+
+        def show_frame_1():
+            frame1.pack(fill='both', expand=1)
+            frame2.pack_forget()
+            frame3.pack_forget()
+
+        def show_frame_2():
+            frame2.pack(fill='both', expand=1)
+            frame1.pack_forget()
+            frame3.pack_forget()
+
+        def show_frame_3():
+            frame3.pack(fill='both', expand=1)
+            frame1.pack_forget()
+            frame2.pack_forget()
+
+        def add_button(frame):
+            omx30_button = tk.Button(frame, text="Show omx30", command=show_frame_1)
+            omx30_button.pack(side=tk.BOTTOM)
+
+            bitcoin_button = tk.Button(frame, text="Show bitcoin", command=show_frame_2)
+            bitcoin_button.pack(side=tk.BOTTOM)
+
+            gold_button = tk.Button(frame, text="Show gold", command=show_frame_3)
+            gold_button.pack(side=tk.BOTTOM)
+
+        add_button(frame3)
+        add_button(frame2)
+        add_button(frame1)
+            
+        show_frame_1()
+        main_window.mainloop()
 
 if __name__ == "__main__":
     main()
