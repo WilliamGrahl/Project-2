@@ -25,6 +25,32 @@ if accounts is None:
     accounts = []
 
 
+def starting_window():
+    starter_window = tk.Tk()
+    starter_window.title("Market Analytics & Data")
+    starter_window.geometry("400x210+3650+500")
+
+    def open_login_window():
+        starter_window.destroy()
+        log_in_window() 
+
+    def open_signup_window():
+        starter_window.destroy()
+        sign_up_window()
+
+    button_font = ("Helvetica", 16)
+
+    go_to_login_button = tk.Button(starter_window, text="Login", command=open_login_window, font=button_font)
+    go_to_login_button.pack(pady=15)
+
+    go_to_signup_button = tk.Button(starter_window, text="Sign up", command=open_signup_window, font=button_font)
+    go_to_signup_button.pack(pady=15)
+
+    exit_button = tk.Button(starter_window, text="Exit", command=lambda: starter_window.destroy(), font=button_font)
+    exit_button.pack(pady=15)
+
+    starter_window.mainloop()
+
 def log_in_window():
     global logged_in
     logged_in = False
@@ -77,7 +103,7 @@ def sign_up_window():
 
     label_password = tk.Label(signup_window, text="Password")
     label_password.pack()
-    entry_password = tk.Entry(signup_window, show="*")
+    entry_password = tk.Entry(signup_window)
     entry_password.pack()
 
     def sign_up():
@@ -101,28 +127,15 @@ def sign_up_window():
             logged_in = True
             signup_window.destroy()
             return
+        
+    button_font = ("Helvetica", 16)
 
-    login_button = tk.Button(signup_window, text="Login", command=sign_up)
+    login_button = tk.Button(signup_window, text="Login", command=sign_up, font=button_font)
     login_button.pack()
 
     signup_window.mainloop()
 
-
-def main():
-    while True:
-        choice = input("\nDo you want to log in, sign up or exit? ")
-        if choice.lower() == "login" or choice == "log in":
-            log_in_window()
-            break
-        elif choice.lower() == "signup" or choice == "sign up":
-            sign_up_window()
-            break
-        elif choice.lower() == "exit":
-            exit()
-        else:
-            print("Invalid choice. Please try again.")
-            continue
-
+def analysis():
     global logged_in
     if logged_in == True: 
 
@@ -148,13 +161,15 @@ def main():
             frame2.pack_forget()
 
         def add_button(frame):
-            omx30_button = tk.Button(frame, text="Show omx30", command=show_frame_1)
+            button_font = ("Helvetica", 16)
+
+            omx30_button = tk.Button(frame, text="Show omx30", command=show_frame_1, font=button_font)
             omx30_button.pack(side=tk.BOTTOM)
 
-            bitcoin_button = tk.Button(frame, text="Show bitcoin", command=show_frame_2)
+            bitcoin_button = tk.Button(frame, text="Show bitcoin", command=show_frame_2, font=button_font)
             bitcoin_button.pack(side=tk.BOTTOM)
 
-            gold_button = tk.Button(frame, text="Show gold", command=show_frame_3)
+            gold_button = tk.Button(frame, text="  Show gold  ", command=show_frame_3, font=button_font)
             gold_button.pack(side=tk.BOTTOM)
 
         add_button(frame3)
@@ -163,6 +178,13 @@ def main():
             
         show_frame_1()
         main_window.mainloop()
+
+
+def main():
+
+    starting_window()
+
+    analysis()
 
 if __name__ == "__main__":
     main()
