@@ -46,7 +46,7 @@ def starting_window():
     go_to_signup_button = tk.Button(starter_window, text="Sign up", command=open_signup_window, font=button_font)
     go_to_signup_button.pack(pady=15)
 
-    exit_button = tk.Button(starter_window, text="Exit", command=lambda: starter_window.destroy(), font=button_font)
+    exit_button = tk.Button(starter_window, text="Exit", command=lambda: exit(), font=button_font)
     exit_button.pack(pady=15)
 
     starter_window.mainloop()
@@ -144,21 +144,43 @@ def analysis():
         frame1 = create_omx_frame(main_window)
         frame2 = create_bitcoin_frame(main_window)
         frame3 = create_gold_frame(main_window)
+        frame4 = create_USD_frame(main_window)
+        frame5 = create_silver_frame(main_window)
 
         def show_frame_1():
             frame1.pack(fill='both', expand=1)
             frame2.pack_forget()
             frame3.pack_forget()
+            frame4.pack_forget()
+            frame5.pack_forget()
 
         def show_frame_2():
             frame2.pack(fill='both', expand=1)
             frame1.pack_forget()
             frame3.pack_forget()
+            frame4.pack_forget()
+            frame5.pack_forget()
 
         def show_frame_3():
             frame3.pack(fill='both', expand=1)
             frame1.pack_forget()
             frame2.pack_forget()
+            frame4.pack_forget()
+            frame5.pack_forget()
+
+        def show_frame_4():
+            frame4.pack(fill='both', expand=1)
+            frame1.pack_forget()
+            frame2.pack_forget()
+            frame3.pack_forget()
+            frame5.pack_forget()
+
+        def show_frame_5():
+            frame5.pack(fill='both', expand=1)
+            frame1.pack_forget()
+            frame2.pack_forget()
+            frame3.pack_forget()
+            frame4.pack_forget()
 
         def add_button(frame):
             button_font = ("Helvetica", 16)
@@ -172,6 +194,17 @@ def analysis():
             gold_button = tk.Button(frame, text="  Show gold  ", command=show_frame_3, font=button_font)
             gold_button.pack(side=tk.BOTTOM)
 
+            USD_button = tk.Button(frame, text="  Show USD  ", command=show_frame_4, font=button_font)
+            USD_button.pack(side=tk.BOTTOM)
+
+            Silver_button = tk.Button(frame, text=" Show Silver ", command=show_frame_5, font=button_font)
+            Silver_button.pack(side=tk.BOTTOM)
+
+            exit_button = tk.Button(frame, text="Exit", command=lambda: exit(), font=button_font)
+            exit_button.pack(pady=20)
+
+        add_button(frame5)
+        add_button(frame4)
         add_button(frame3)
         add_button(frame2)
         add_button(frame1)
