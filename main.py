@@ -1,6 +1,5 @@
-import tkinter as tk
-import pickle
 from plots import *
+import pickle
 
 def save_data_with_pickle(data, filename):
     try:
@@ -20,96 +19,103 @@ def load_data_with_pickle(filename):
         print("An error occurred", e)
         exit()
 
+
 accounts = load_data_with_pickle("saved_data.pkl")
 if accounts is None:
     accounts = []
 
 
-def log_in():
-    while True:
+def log_in_window():
+    global logged_in
+    logged_in = False
+    login_window = tk.Tk()
+    login_window.title("Login")
+    login_window.geometry("380x170+3650+500")
+
+    label_username = tk.Label(login_window, text="Username")
+    label_username.pack()
+    entry_username = tk.Entry(login_window)
+    entry_username.pack()
+
+    label_password = tk.Label(login_window, text="Password")
+    label_password.pack()
+    entry_password = tk.Entry(login_window, show="*")
+    entry_password.pack()
+
+    def log_in():
         global logged_in
-        global username
-        logged_in = False
-        username = input("\nEnter your username: ")
-        password = input("Enter your password: ")
-        
+        username = entry_username.get()
+        password = entry_password.get()
+
         for account in accounts:
             if account['username'] == username and account['password'] == password:
                 print("\nLogin successful!")
-                print(f"\nWelcome {username}")
                 logged_in = True
+                print(f"\nWelcome {username}")
+                login_window.destroy()
                 return
-            
-        while True:
-            print("\nIncorrect username or password.")
-            print("Do you want to:")
-            print("1. Try")
-            print("2. Go to starting menu")
-            print("3. Exit")
-            try:
-                choice = int(input())    
-                if choice == 1:
-                    break  
-                elif choice == 2:
-                    main()
-                    return
-                elif choice == 3:
-                    exit()
-                else:
-                    print("Invalid input. Please try again")
-            except ValueError:
-                print("Invalid input. Please enter a number.")
-        
 
-def sign_up():
-    while True:
+        print("\nIncorrect username or password.")
+
+    login_button = tk.Button(login_window, text="Login", command=log_in)
+    login_button.pack()
+
+    login_window.mainloop()
+
+
+def sign_up_window():
+    global logged_in
+    logged_in = False
+    signup_window = tk.Tk()
+    signup_window.title("Sign up")
+    signup_window.geometry("380x170+3650+500")
+
+    label_username = tk.Label(signup_window, text="Username")
+    label_username.pack()
+    entry_username = tk.Entry(signup_window)
+    entry_username.pack()
+
+    label_password = tk.Label(signup_window, text="Password")
+    label_password.pack()
+    entry_password = tk.Entry(signup_window, show="*")
+    entry_password.pack()
+
+    def sign_up():
         global logged_in
-        logged_in = False
-        username = input("\nEnter a username: ")
-        password = input("Enter a password: ")
-        
+        username = entry_username.get()
+        password = entry_password.get()
+
         foundExisting = False
 
         for account in accounts:
             if account['username'] == username:
                 print("\nUsername already exists. Please choose a different one.")
                 foundExisting = True
-                
+
+
         if foundExisting == False:
             accounts.append({'username': username, 'password': password})
             save_data_with_pickle(accounts, "saved_data.pkl")
             print("\nAccount created successfully.\n")
             print(f"Welcome {username}")
             logged_in = True
+            signup_window.destroy()
             return
 
-        while True:
-            print("Do you want to:")
-            print("1. Try again")
-            print("2. Go to starting menu")
-            print("3. Exit")
-            try:
-                choice = int(input())    
-                if choice == 1:
-                    break  
-                elif choice == 2:
-                    main()
-                    return
-                elif choice == 3:
-                    exit()
-                else:
-                    print("Invalid input. Please try again")
-            except ValueError:
-                print("Invalid input. Please enter a number.")   
+    login_button = tk.Button(signup_window, text="Login", command=sign_up)
+    login_button.pack()
+
+    signup_window.mainloop()
+
 
 def main():
     while True:
         choice = input("\nDo you want to log in, sign up or exit? ")
         if choice.lower() == "login" or choice == "log in":
-            log_in()
+            log_in_window()
             break
         elif choice.lower() == "signup" or choice == "sign up":
-            sign_up()
+            sign_up_window()
             break
         elif choice.lower() == "exit":
             exit()
@@ -121,7 +127,7 @@ def main():
     if logged_in == True: 
 
         main_window = tk.Tk()
-        main_window.geometry("1200x600")
+        main_window.geometry("1200x600+3200+370")
         frame1 = create_omx_frame(main_window)
         frame2 = create_bitcoin_frame(main_window)
         frame3 = create_gold_frame(main_window)
