@@ -19,15 +19,13 @@ def load_data_with_pickle(filename):
         print("An error occurred", e)
         exit()
 
-
 accounts = load_data_with_pickle("saved_data.pkl")
 if accounts is None:
     accounts = []
 
-
 def starting_window():
     starter_window = tk.Tk()
-    starter_window.title("Market Analytics & Data")
+    starter_window.title("Menu")
     starter_window.geometry("400x210+3650+500")
 
     def open_login_window():
@@ -56,7 +54,7 @@ def log_in_window():
     logged_in = False
     login_window = tk.Tk()
     login_window.title("Login")
-    login_window.geometry("380x170+3650+500")
+    login_window.geometry("380x200+3650+500")
 
     label_username = tk.Label(login_window, text="Username")
     label_username.pack()
@@ -68,20 +66,27 @@ def log_in_window():
     entry_password = tk.Entry(login_window, show="*")
     entry_password.pack()
 
+    error_shown = False
+
     def log_in():
         global logged_in
+        nonlocal error_shown
+
         username = entry_username.get()
         password = entry_password.get()
 
         for account in accounts:
             if account['username'] == username and account['password'] == password:
-                print("\nLogin successful!")
                 logged_in = True
-                print(f"\nWelcome {username}")
                 login_window.destroy()
                 return
+        
+        if error_shown:
+            return
 
-        print("\nIncorrect username or password.")
+        label_invalid = tk.Label(login_window, text="Incorrect username or password", fg="red")
+        label_invalid.pack()
+        error_shown = True 
 
     login_button = tk.Button(login_window, text="Login", command=log_in)
     login_button.pack()
@@ -94,7 +99,7 @@ def sign_up_window():
     logged_in = False
     signup_window = tk.Tk()
     signup_window.title("Sign up")
-    signup_window.geometry("380x170+3650+500")
+    signup_window.geometry("380x200+3650+500")
 
     label_username = tk.Label(signup_window, text="Username")
     label_username.pack()
@@ -106,35 +111,33 @@ def sign_up_window():
     entry_password = tk.Entry(signup_window)
     entry_password.pack()
 
+    error_label = tk.Label(signup_window, fg="red")
+    error_label.pack()
+
     def sign_up():
         global logged_in
         username = entry_username.get()
         password = entry_password.get()
 
-        foundExisting = False
+        found_existing = False
 
         for account in accounts:
             if account['username'] == username:
-                print("\nUsername already exists. Please choose a different one.")
-                foundExisting = True
+                error_label.config(text="Username already exists. Please choose a different one")
+                found_existing = True
+                break
 
-
-        if foundExisting == False:
+        if not found_existing:
             accounts.append({'username': username, 'password': password})
             save_data_with_pickle(accounts, "saved_data.pkl")
-            print("\nAccount created successfully.\n")
-            print(f"Welcome {username}")
             logged_in = True
             signup_window.destroy()
-            return
-        
-    button_font = ("Helvetica", 16)
 
-    login_button = tk.Button(signup_window, text="Login", command=sign_up, font=button_font)
-    login_button.pack()
+    signup_button = tk.Button(signup_window, text="Sign up", command=sign_up)
+    signup_button.pack()
 
     signup_window.mainloop()
-
+    
 def analysis():
     global logged_in
     if logged_in == True: 
@@ -211,7 +214,6 @@ def analysis():
             
         show_frame_1()
         main_window.mainloop()
-
 
 def main():
 
