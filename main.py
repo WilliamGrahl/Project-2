@@ -38,7 +38,7 @@ def starting_window():
 
     button_font = ("Helvetica", 16)
 
-    go_to_login_button = tk.Button(starter_window, text="Login", command=open_login_window, font=button_font)
+    go_to_login_button = tk.Button(starter_window, text="Sign in", command=open_login_window, font=button_font)
     go_to_login_button.pack(pady=15)
 
     go_to_signup_button = tk.Button(starter_window, text="Sign up", command=open_signup_window, font=button_font)
@@ -53,7 +53,7 @@ def log_in_window():
     global logged_in
     logged_in = False
     login_window = tk.Tk()
-    login_window.title("Login")
+    login_window.title("Sign in")
     login_window.geometry("380x200+3650+500")
 
     label_username = tk.Label(login_window, text="Username")
@@ -88,7 +88,7 @@ def log_in_window():
         label_invalid.pack()
         error_shown = True 
 
-    login_button = tk.Button(login_window, text="Login", command=log_in)
+    login_button = tk.Button(login_window, text="Sign in", command=log_in)
     login_button.pack()
 
     login_window.mainloop()
